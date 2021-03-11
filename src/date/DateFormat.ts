@@ -17,7 +17,7 @@ export class DateFormat {
      * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy & ISO format
      * @description Should return a ISO date format
      */
-    formatDate(date: string, timezones: Timezones = Timezones.America_Sao_Paulo): string | null {
+    formatDate(date: string, timezones: Timezones | string = Timezones.America_Sao_Paulo): string | null {
         if (!date) { return null }
 
         if (date.includes('/') && date.split('/')[2].length > 2) {
