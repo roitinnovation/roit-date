@@ -1,3 +1,3 @@
 # ROIT Date Format
 
-    Run: npm ci
+    To restore the dependencies run > npm ci
