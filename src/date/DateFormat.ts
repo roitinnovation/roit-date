@@ -1,4 +1,5 @@
 import { format, parseISO, add } from "date-fns"
+import { Timezone, ConvertTimezoneToHour } from "../enums/Timezone"
 
 export class DateFormat {
 
@@ -15,7 +16,7 @@ export class DateFormat {
      * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy & ISO format
      * @description Should return a ISO date format
      */
-    formatDate(date: string): string | null {
+    formatDate(date: string, timezone: Timezone = Timezone.AMERICA_SAO_PAULO ): string | null {
         if (!date) { return null }
 
         if (date.includes('/') && date.split('/')[2].length > 2) {
@@ -36,10 +37,7 @@ export class DateFormat {
       
         if (date.match(/\d{2}Z$/)) return parseISO(date).toISOString()
         
-        if (date.match(/^\d{4}-\d{2}-\d{2}$/))  
-            return add(parseISO(date), { hours: 3 }).toISOString()
-
-        return parseISO(date).toISOString()
+        return add(parseISO(date), { hours: ConvertTimezoneToHour[timezone] }).toISOString()
       
     }
 
