@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns"
+import { format, parseISO, add } from "date-fns"
 
 export class DateFormat {
 
@@ -37,7 +37,7 @@ export class DateFormat {
         if (date.match(/\d{2}Z$/)) return parseISO(date).toISOString()
         
         if (date.match(/^\d{4}-\d{2}-\d{2}$/))  
-            return parseISO(date).toISOString()
+            return add(parseISO(date), { hours: 3 }).toISOString()
 
         return parseISO(date).toISOString()
       

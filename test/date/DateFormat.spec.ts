@@ -9,7 +9,7 @@ describe('DateFormat', () => {
         it('Should be able to format dd/mm/yyyy to ISO format', () => {
             const result = sut.formatDate('12/01/2021')
  
-            const expected = '2021-01-12T03:00:00.000Z'
+            const expected = new Date('2021-01-12 03:00').toISOString()
 
             expect(result).to.be.deep.equal(expected)
          })
@@ -17,7 +17,7 @@ describe('DateFormat', () => {
          it('Should be able to format yyyy/mm/dd to ISO format', () => {
             const result = sut.formatDate('2021/01/12')
  
-            const expected = '2021-01-12T03:00:00.000Z'
+            const expected = new Date('2021-01-12 03:00').toISOString()
  
             expect(result).to.be.deep.equal(expected)
          })
@@ -25,7 +25,7 @@ describe('DateFormat', () => {
          it('Should be able to format yyyy-mm-dd to ISO format', () => {
             const result = sut.formatDate('2021-01-12')
  
-            const expected = '2021-01-12T03:00:00.000Z'
+            const expected = new Date('2021-01-12 03:00').toISOString()
  
             expect(result).to.be.deep.equal(expected)
          })
