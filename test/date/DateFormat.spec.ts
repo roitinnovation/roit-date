@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { DateFormat, Timezones } from '../../src';
+import { DateFormat } from '../../src';
 
 describe('DateFormat', () => {
     let sut = DateFormat.getInstance()
 
     describe('formatDate()', () => {
         it('Should be able to format dd/mm/yyyy to ISO format', () => {
-            const result = sut.formatDate('12/01/2021', Timezones.America_Sao_Paulo)
+            const result = sut.formatDate('12/01/2021')
  
             const expected = '2021-01-12T03:00:00.000Z'
- 
+
             expect(result).to.be.deep.equal(expected)
          })
 

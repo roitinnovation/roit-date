@@ -1,6 +1,4 @@
 import { format, parseISO } from "date-fns"
-import { utcToZonedTime } from "date-fns-tz"
-import { Timezones } from "../enums/Timezones"
 
 export class DateFormat {
 
@@ -17,7 +15,7 @@ export class DateFormat {
      * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy & ISO format
      * @description Should return a ISO date format
      */
-    formatDate(date: string, timezones: Timezones | string = Timezones.America_Sao_Paulo): string | null {
+    formatDate(date: string): string | null {
         if (!date) { return null }
 
         if (date.includes('/') && date.split('/')[2].length > 2) {
@@ -38,8 +36,10 @@ export class DateFormat {
       
         if (date.match(/\d{2}Z$/)) return parseISO(date).toISOString()
         
-        const parsedDate = parseISO(date)
-        return utcToZonedTime(parsedDate, timezones).toISOString()
+        if (date.match(/^\d{4}-\d{2}-\d{2}$/))  
+            return parseISO(date).toISOString()
+
+        return parseISO(date).toISOString()
       
     }
 
