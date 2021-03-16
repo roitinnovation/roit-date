@@ -1,12 +1,11 @@
-import { format, parseISO, add } from "date-fns"
+import { parseISO, add } from "date-fns"
 import { Timezone, ConvertTimezoneToHour } from "../enums/Timezone"
 
 export class DateFormat {
 
     private static instance: DateFormat = new DateFormat()
 
-    private constructor () {
-    }
+    private constructor () {}
 
     static getInstance(): DateFormat {
         return this.instance
@@ -47,17 +46,6 @@ export class DateFormat {
         
         return add(parseISO(date), { hours: ConvertTimezoneToHour[timezone] }).toISOString()
       
-    }
-
-    /**
-     * @param issueDate Accept following date formats: yyyy/mm/dd, dd/mm/yyyy & ISO format
-     * @description Should return a mm/yyyy date format
-     */
-    formatCompetence(issueDate: string): string | null {
-        const formatedDate = this.formatDate(issueDate)
-        if (!formatedDate) return null
-
-        return format(parseISO(formatedDate), 'MM/yyyy')
     }
 
 } 
