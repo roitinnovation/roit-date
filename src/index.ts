@@ -1,3 +1,3 @@
-export { DateFormat } from './date/DateFormat'
-export { FormatToUser } from './date/FormatToUser'
+export { formatDate } from './date/DateFormat'
+export { formatCompetence, showDateToUser } from './date/FormatToUser'
 export { Timezone } from './enums/Timezone'

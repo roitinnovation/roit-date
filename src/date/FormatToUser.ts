@@ -1,25 +1,21 @@
-import { parseISO } from "date-fns"
-import { format } from "date-fns"
+import { parseISO, format } from "date-fns"
 
-export class FormatToUser {
+/**
+ * @param date Accept only ISO date
+ * @description Should return a mm/yyyy date format
+ */
+export function formatCompetence(date: string): string | null {
+    if (!date) return null
 
-    private static instance: FormatToUser = new FormatToUser()
-
-    private constructor () {}
-
-    static getInstance(): FormatToUser {
-        return this.instance
-    }
-
-    /**
-     * @param date Accept only ISO date
-     * @description Should return a mm/yyyy date format
-     */
-    formatCompetence(date: string): string | null {
-        if (!date) return null
-
-        return format(parseISO(date), 'MM/yyyy')
-    }
-    
+    return format(parseISO(date), 'MM/yyyy')
 }
-    
+
+/**
+ * @param date Accept only ISO date
+ * @description Should return a dd/mm/yyyy date format
+ */
+export function showDateToUser(date: string): string | null {
+    if (!date) return null
+
+    return format(parseISO(date), 'dd/MM/yyyy')
+}
