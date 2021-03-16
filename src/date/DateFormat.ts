@@ -19,23 +19,31 @@ export class DateFormat {
     formatDate(date: string, timezone: Timezone = Timezone.AMERICA_SAO_PAULO ): string | null {
         if (!date) { return null }
 
-        if (date.includes('/') && date.split('/')[2].length > 2) {
-            let day = date.split('/')[0]
-            let month = date.split('/')[1]
-            const year = date.split('/')[2]
-      
-            date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-        }
-      
         if (date.includes('/') && date.split('/')[0].length > 2) {
             let day = date.split('/')[2]
             let month = date.split('/')[1]
-            const year = date.split('/')[0]
+            let year = date.split('/')[0]
       
-            date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
+            // Verify if has hours
+            const hours = day.split(' ')[1] || day.split('T')[1]
+            day = day.split(' ')[0] || day.split('T')[0]
+
+            date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
         }
+
+        if (date.includes('/') && date.split('/')[2].length > 2) {
+            let day = date.split('/')[0]
+            let month = date.split('/')[1]
+            let year = date.split('/')[2]
+
+            // Verify if has hours
+            const hours = year.split(' ')[1] || year.split('T')[1]
+            year = year.split(' ')[0] || year.split('T')[0]
       
-        if (date.match(/\d{2}Z$/)) return parseISO(date).toISOString()
+            date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
+        }
+
+        if (date.includes('Z')) return parseISO(date).toISOString()
         
         return add(parseISO(date), { hours: ConvertTimezoneToHour[timezone] }).toISOString()
       

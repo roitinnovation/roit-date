@@ -6,19 +6,35 @@ describe('DateFormat', () => {
     let sut = DateFormat.getInstance()
 
     describe('formatDate()', () => {
-        it('Should be able to format dd/mm/yyyy to ISO format', () => {
-            const result = sut.formatDate('12/01/2021')
- 
-            const expected = new Date('2021-01-12 03:00').toISOString()
+      it('Should be able to format dd/mm/yyyy to ISO format', () => {
+         const result = sut.formatDate('12/01/2021')
 
-            expect(result).to.be.deep.equal(expected)
-         })
+         const expected = new Date('2021-01-12 03:00').toISOString()
+
+         expect(result).to.be.deep.equal(expected)
+      })
+
+      it('Should be able to format dd/mm/yyyy HH:mm to ISO format', () => {
+         const result = sut.formatDate('12/01/2021 13:00')
+
+         const expected = new Date('2021-01-12 16:00').toISOString()
+
+         expect(result).to.be.deep.equal(expected)
+      })
 
          it('Should be able to format yyyy/mm/dd to ISO format', () => {
             const result = sut.formatDate('2021/01/12')
  
             const expected = new Date('2021-01-12 03:00').toISOString()
  
+            expect(result).to.be.deep.equal(expected)
+         })
+
+         it('Should be able to format yyyy/mm/dd HH:mm to ISO format', () => {
+            const result = sut.formatDate('2021/01/12 13:00')
+   
+            const expected = new Date('2021-01-12 16:00').toISOString()
+   
             expect(result).to.be.deep.equal(expected)
          })
 
