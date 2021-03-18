@@ -1,6 +1,6 @@
 {
   "name": "@roit/roit-date",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "dist/index.js",
   "types": "src/index.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "test:watch": "npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts",
     "test:cov": "npx nyc npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts"
   },
-  "author": "Author",
+  "author": "ROIT Innovation",
   "devDependencies": {
     "@types/chai": "^4.2.0",
     "@types/mocha": "^5.2.7",
