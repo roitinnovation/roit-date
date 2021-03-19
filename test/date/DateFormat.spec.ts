@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { formatDate } from '../../src';
+import { formatComponentDate } from '../../src/date/DateFormat';
 
 describe('DateFormat', () => {
     describe('formatDate()', () => {
@@ -56,6 +57,22 @@ describe('DateFormat', () => {
             const result = formatDate('2021-01-12T03:00:00.000Z')
 
             const expected = new Date('2021-01-12 00:00').toISOString()
+
+            expect(result).to.be.deep.equal(expected)
+         })
+
+         it ('Should return the correct date', () => {
+            const result = formatComponentDate('Thu Mar 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)')
+
+            const expected = new Date('2021-03-18 03:00').toISOString()
+
+            expect(result).to.be.deep.equal(expected)
+         })
+
+         it ('Should return null because date is invalid', () => {
+            const result = formatComponentDate('Thu Aleatorio 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)')
+
+            const expected = null
 
             expect(result).to.be.deep.equal(expected)
          })
