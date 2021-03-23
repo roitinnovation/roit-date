@@ -1,19 +1,19 @@
-import { parseISO, add } from "date-fns"
-import { Timezone, ConvertTimezoneToHour } from "../enums/Timezone"
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
+import { Timezone } from "../enums/Timezone"
 
 /**
- * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy & ISO format
- * @description Should return a ISO date format
+ * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
+ * @description Should return a UTC date format
  */
-export function formatDate(date: string, timezone: Timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+export function formatDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
     if (!date) { return null }
 
-    // 2021/03/18 - 2021/03/18 00:00
+    // 2021/03/18 - 2021/03/18 00:00 - 2021/03/18 00:00:00 - 2021/03/18T00:00:00
     if (date.includes('/') && date.split('/')[0].length > 2) {
         const dayWithHour = date.split('/')[2]
         const month = date.split('/')[1]
         const year = date.split('/')[0]
-
+    
         // Verify if has hours
         const hours = dayWithHour.split(' ')[1] || dayWithHour.split('T')[1]
         const day = dayWithHour.split(' ')[0] || dayWithHour.split('T')[0]
@@ -21,7 +21,7 @@ export function formatDate(date: string, timezone: Timezone = Timezone.AMERICA_S
         date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
     }
 
-    // 18/03/2021 - 18/03/2021 00:00
+    // 18/03/2021 - 18/03/2021 00:00 - 18/03/2021 00:00:00 - 18/03/2021T00:00:00
     if (date.includes('/') && date.split('/')[2].length > 2) {
         const day = date.split('/')[0]
         const month = date.split('/')[1]
@@ -30,20 +30,33 @@ export function formatDate(date: string, timezone: Timezone = Timezone.AMERICA_S
         // Verify if has hours
         const hours = yearWithHour.split(' ')[1] || yearWithHour.split('T')[1]
         const year = yearWithHour.split(' ')[0] || yearWithHour.split('T')[0]
-
+    
         date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
     }
 
     // - 2021-03-18T00:00:00
     const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
     if (hourMinuteSecondsMatch) {
-        return parseISO(date).toISOString()
+        return zonedTimeToUtc(date, timezone).toISOString()
     }
 
-    if (date.includes('Z')) return parseISO(date).toISOString()
-
-    return add(parseISO(date), { hours: ConvertTimezoneToHour[timezone] }).toISOString()
+    // - 2021-03-18T00:00:00.000Z
+    const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
+    if (isIsoFormat) return date
+    
+    return zonedTimeToUtc(date, timezone).toISOString()
 }
+
+/**
+ * @param date Accept only ISO date format
+ * @description Should return a UTC date format based on timezone informed
+ */
+export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+    if (!date) return null
+
+    return utcToZonedTime(date, timezone).toISOString()
+}
+
 /**
  * 
  * @param date date must be in format Thu Mar 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)

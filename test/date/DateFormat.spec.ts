@@ -1,80 +1,102 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { formatDate } from '../../src';
-import { formatComponentDate } from '../../src/date/DateFormat';
+import { formatComponentDate, retrieveDate } from '../../src/date/DateFormat';
 
 describe('DateFormat', () => {
-    describe('formatDate()', () => {
-      it('Should be able to format dd/mm/yyyy to ISO format', () => {
-         const result = formatDate('12/01/2021')
+   it('Should be able to format dd/mm/yyyy to ISO format', () => {
+      const formatDateResult = formatDate('12/01/2021')
+      const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         const expected = new Date('2021-01-12 03:00').toISOString()
+      const formatDateExpected = '2021-01-12T03:00:00.000Z'
+      const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
 
-         expect(result).to.be.deep.equal(expected)
+      expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+      expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+   })
+
+   it('Should be able to format dd/mm/yyyy HH:mm to ISO format', () => {
+      const formatDateResult = formatDate('12/01/2021 13:00')
+      const retrieveDateResult = retrieveDate(formatDateResult as string)
+
+      const formatDateExpected = '2021-01-12T16:00:00.000Z'
+      const retrieveDateExpected = '2021-01-12T13:00:00.000Z'
+
+      expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+      expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+   })
+
+      it('Should be able to format yyyy/mm/dd to ISO format', () => {
+         const formatDateResult = formatDate('2021/01/12')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
+
+         const formatDateExpected = '2021-01-12T03:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
+
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+   })
+
+      it('Should be able to format yyyy/mm/dd HH:mm to ISO format', () => {
+         const formatDateResult = formatDate('2021/01/12 13:00')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
+
+         const formatDateExpected = '2021-01-12T16:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T13:00:00.000Z'
+
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
       })
 
-      it('Should be able to format dd/mm/yyyy HH:mm to ISO format', () => {
-         const result = formatDate('12/01/2021 13:00')
+      it('Should be able to format yyyy-mm-dd to ISO format', () => {
+         const formatDateResult = formatDate('2021-01-12')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         const expected = new Date('2021-01-12 16:00').toISOString()
+         const formatDateExpected = '2021-01-12T03:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
 
-         expect(result).to.be.deep.equal(expected)
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
       })
 
-         it('Should be able to format yyyy/mm/dd to ISO format', () => {
-            const result = formatDate('2021/01/12')
- 
-            const expected = new Date('2021-01-12 03:00').toISOString()
- 
-            expect(result).to.be.deep.equal(expected)
-         })
+      it('Should be able to format yyyy-mm-dd HH:mm to ISO format', () => {
+         const formatDateResult = formatDate('2021-01-12')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         it('Should be able to format yyyy/mm/dd HH:mm to ISO format', () => {
-            const result = formatDate('2021/01/12 13:00')
-   
-            const expected = new Date('2021-01-12 16:00').toISOString()
-   
-            expect(result).to.be.deep.equal(expected)
-         })
+         const formatDateExpected = '2021-01-12T03:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
 
-         it('Should be able to format yyyy-mm-dd to ISO format', () => {
-            const result = formatDate('2021-01-12')
- 
-            const expected = new Date('2021-01-12 03:00').toISOString()
- 
-            expect(result).to.be.deep.equal(expected)
-         })
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+      })
 
-         it('Should be able to format yyyy-mm-dd HH:mm to ISO format', () => {
-            const result = formatDate('2021-01-12 03:00')
- 
-            const expected = new Date('2021-01-12 06:00').toISOString()
- 
-            expect(result).to.be.deep.equal(expected)
-         })
+      it('Should return same input date if already is in ISO format with timezone', () => {
+         const formatDateResult = formatDate('2021-01-12T03:00:00.000Z')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         it('Should return same input date if already is in ISO format with timezone', () => {
-            const result = formatDate('2021-01-12T03:00:00.000Z')
+         const formatDateExpected = '2021-01-12T03:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
 
-            const expected = new Date('2021-01-12 00:00').toISOString()
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+      })
 
-            expect(result).to.be.deep.equal(expected)
-         })
+      it ('Should return the correct date', () => {
+         const formatDateResult = formatComponentDate('Thu Mar 18 2021 20:27:53 GMT-0300 (Horário Padrão de Brasília)')
+         const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         it ('Should return the correct date', () => {
-            const result = formatComponentDate('Thu Mar 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)')
+         const formatDateExpected = '2021-03-18T03:00:00.000Z'
+         const retrieveDateExpected = '2021-03-18T00:00:00.000Z'
 
-            const expected = new Date('2021-03-18 03:00').toISOString()
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+         expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
+      })
 
-            expect(result).to.be.deep.equal(expected)
-         })
+      it ('Should return null because date is invalid', () => {
+         const formatDateResult = formatComponentDate('Thu Aleatorio 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)')
 
-         it ('Should return null because date is invalid', () => {
-            const result = formatComponentDate('Thu Aleatorio 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)')
+         const formatDateExpected = null
 
-            const expected = null
-
-            expect(result).to.be.deep.equal(expected)
-         })
-    })
+         expect(formatDateResult).to.be.deep.equal(formatDateExpected)
+      })
 })

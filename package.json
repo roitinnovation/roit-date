@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc --incremental -p tsconfig.build.json",
     "deploy": "npm run build && npm test && npm publish --access public --scope=roit",
-    "test": "npx mocha --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts",
-    "test:watch": "npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts",
-    "test:cov": "npx nyc npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts"
+    "test": "TZ=America/VA npx mocha --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts",
+    "test:watch": "TZ=America/VA npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts",
+    "test:cov": "TZ=America/VA npx nyc npx mocha -w --parallel --timeout 15000 -r ts-node/register test/**/*.spec.ts"
   },
   "author": "ROIT Innovation",
   "devDependencies": {

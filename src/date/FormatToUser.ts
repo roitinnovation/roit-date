@@ -1,21 +1,26 @@
 import { parseISO, format } from "date-fns"
+import { utcToZonedTime } from "date-fns-tz"
+
+import { Timezone } from "../enums/Timezone"
 
 /**
  * @param date Accept only ISO date
  * @description Should return a mm/yyyy date format
  */
-export function formatCompetence(date: string): string | null {
+export function formatCompetence(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
     if (!date) return null
 
-    return format(parseISO(date), 'MM/yyyy')
+    const convertedDate = utcToZonedTime(date, timezone).toISOString()
+    return format(parseISO(convertedDate), 'MM/yyyy')
 }
 
 /**
  * @param date Accept only ISO date
  * @description Should return a dd/mm/yyyy date format
  */
-export function showDateToUser(date: string): string | null {
+export function showDateToUser(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
     if (!date) return null
 
-    return format(parseISO(date), 'dd/MM/yyyy')
+    const convertedDate = utcToZonedTime(date, timezone).toISOString()
+    return format(parseISO(convertedDate), 'dd/MM/yyyy')
 }
