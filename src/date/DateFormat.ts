@@ -40,10 +40,6 @@ export function formatDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO):
         return zonedTimeToUtc(date, timezone).toISOString()
     }
 
-    // - 2021-03-18T00:00:00.000Z
-    const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
-    if (isIsoFormat) return date
-    
     return zonedTimeToUtc(date, timezone).toISOString()
 }
 
