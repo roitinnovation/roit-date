@@ -16,14 +16,14 @@ const date4 = '2021-01-12: 00:00';
 const date5 = '2021-01-12T03:00:00.000Z';
 
 // Timezone by default is 'America/Sao_Paulo'
-formatDate(date1, Timezone.AMERICA_SAO_PAULO); // 2021-01-12T03:00:00.000Z
+formatDate(date1, { timezone: Timezone.AMERICA_SAO_PAULO }); // 2021-01-12T03:00:00.000Z
 formatDate(date2); // 2021-01-12T03:00:00.000Z
 formatDate(date3); // 2021-01-12T03:00:00.000Z
 formatDate(date4); // 2021-01-12T03:00:00.000Z
 formatDate(date5); // 2021-01-12T03:00:00.000Z
 
 // Timezone by default is 'America/Sao_Paulo'
-retrieveDate(date1, Timezone.AMERICA_SAO_PAULO); // 2021-01-12T00:00:00.000Z
+retrieveDate(date1, { timezone: Timezone.AMERICA_SAO_PAULO }); // 2021-01-12T00:00:00.000Z
 retrieveDate(date2); // 2021-01-12T00:00:00.000Z
 retrieveDate(date3); // 2021-01-12T00:00:00.000Z
 retrieveDate(date4); // 2021-01-12T00:00:00.000Z
@@ -39,12 +39,12 @@ const date1 = '2021-02-12T03:00:00.000Z';
 const date2 = '2021-02-01T00:00:00.000Z';
 
 // Timezone by default is 'America/Sao_Paulo'
-showDateToUser(date, Timezone.AMERICA_SAO_PAULO); // 12/02/2021
+showDateToUser(date, { timezone: Timezone.AMERICA_SAO_PAULO }); // 12/02/2021
 showDateToUser(date1); // 12/02/2021
 showDateToUser(date2); // 31/01/2021    -> Based on the timezone it will convert back to UTC -3 which is Sao Paulo
 
 // Timezone by default is 'America/Sao_Paulo'
-formatCompetence(date, Timezone.AMERICA_SAO_PAULO); // 02/2021
+formatCompetence(date, { timezone: Timezone.AMERICA_SAO_PAULO }); // 02/2021
 formatCompetence(date1); // 02/2021
 formatCompetence(date2); // 01/2021     -> Based on the timezone it will convert back to UTC -3 which is Sao Paulo
 ```

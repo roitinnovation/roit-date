@@ -1,12 +1,17 @@
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
-import { Timezone } from "../enums/Timezone"
+import { Timezone } from "../domain/enums/Timezone"
+import { Options } from "../domain/Options"
 
 /**
  * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
  * @description Should return a UTC date format
  */
-export function formatDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+export function formatDate(
+    date: string, options?: Options): (string | null) {
     if (!date) { return null }
+
+    const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
+    const ignoreTimezone = options?.ignoreTimezone ?? false
 
     // 2021/03/18 - 2021/03/18 00:00 - 2021/03/18 00:00:00 - 2021/03/18T00:00:00
     if (date.includes('/') && date.split('/')[0].length > 2) {
@@ -40,6 +45,10 @@ export function formatDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO):
         return zonedTimeToUtc(date, timezone).toISOString()
     }
 
+    // - 2021-03-18T00:00:00.000Z
+    const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
+    if (isIsoFormat && ignoreTimezone) date = date.replace(/(.)\d{3}(Z)$/g, '')
+    
     return zonedTimeToUtc(date, timezone).toISOString()
 }
 
@@ -58,7 +67,7 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
  * @param date date must be in format Thu Mar 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)
  * @returns formatDate function call
  */
-export function formatComponentDate(date: string): (string | null) {
+export function formatComponentDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
     const monthsMap = new Map<string, number>()
     monthsMap.set("Jan", 1)
     monthsMap.set("Feb", 2)
@@ -83,5 +92,6 @@ export function formatComponentDate(date: string): (string | null) {
     const dateWithoutDayAndMonth = dateWithoutMonth.substring(2).trim()
     const year = dateWithoutDayAndMonth.substring(0, 4).trim()
     const fullDate = `${year}-${month}-${day}`
-    return formatDate(fullDate)
+
+    return formatDate(fullDate, { timezone })
 }

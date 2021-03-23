@@ -1,7 +1,7 @@
 import { parseISO, format } from "date-fns"
 import { utcToZonedTime } from "date-fns-tz"
 
-import { Timezone } from "../enums/Timezone"
+import { Timezone } from "../domain/enums/Timezone"
 
 /**
  * @param date Accept only ISO date

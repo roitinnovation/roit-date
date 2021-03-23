@@ -70,18 +70,18 @@ describe('DateFormat', () => {
          expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
       })
 
-      it('Should return same input date if already is in ISO format with timezone', () => {
-         const formatDateResult = formatDate('2021-01-12T03:00:00.000Z')
+      it('Should be able to format yyyy-mm-ddTHH:mm:ssZ to ISO format', () => {
+         const formatDateResult = formatDate('2021-01-12T03:00:00.000Z', { ignoreTimezone: true })
          const retrieveDateResult = retrieveDate(formatDateResult as string)
 
-         const formatDateExpected = '2021-01-12T03:00:00.000Z'
-         const retrieveDateExpected = '2021-01-12T00:00:00.000Z'
+         const formatDateExpected = '2021-01-12T06:00:00.000Z'
+         const retrieveDateExpected = '2021-01-12T03:00:00.000Z'
 
          expect(formatDateResult).to.be.deep.equal(formatDateExpected)
          expect(retrieveDateResult).to.be.deep.equal(retrieveDateExpected)
       })
 
-      it ('Should return the correct date', () => {
+      it ("Should be able to format 'Thu Mar 18 2021 20:27:53 GMT-0300 (Horário Padrão de Brasília)' to ISO format", () => {
          const formatDateResult = formatComponentDate('Thu Mar 18 2021 20:27:53 GMT-0300 (Horário Padrão de Brasília)')
          const retrieveDateResult = retrieveDate(formatDateResult as string)
 
