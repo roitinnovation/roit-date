@@ -52,7 +52,8 @@ formatCompetence(date2); // 01/2021     -> Based on the timezone it will convert
 ### Retrieving actual date
 
 ```typescript
-import { getActualDate } from '@roit/roit-date';
+import { getActualDate, Timezone } from '@roit/roit-date';
 
 getActualDate() // outputs 2021-02-12T03:00:00.000Z
+getActualDate(Timezone.AMERICA_SAO_PAULO) // outputs 2021-02-12T03:00:00.000Z
 ```
