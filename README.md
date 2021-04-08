@@ -48,3 +48,11 @@ formatCompetence(date, { timezone: Timezone.AMERICA_SAO_PAULO }); // 02/2021
 formatCompetence(date1); // 02/2021
 formatCompetence(date2); // 01/2021     -> Based on the timezone it will convert back to UTC -3 which is Sao Paulo
 ```
+
+### Retrieving actual date
+
+```typescript
+import { getActualDate } from '@roit/roit-date';
+
+getActualDate() // outputs 2021-02-12T03:00:00.000Z
+```
