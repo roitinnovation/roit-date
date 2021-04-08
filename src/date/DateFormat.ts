@@ -13,20 +13,17 @@ export function formatDate(
     const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
     const ignoreTimezone = options?.ignoreTimezone ?? false
 
-    // 2021/03/18 - 2021/03/18 00:00 - 2021/03/18 00:00:00 - 2021/03/18T00:00:00
     if (date.includes('/') && date.split('/')[0].length > 2) {
         const dayWithHour = date.split('/')[2]
         const month = date.split('/')[1]
         const year = date.split('/')[0]
-    
-        // Verify if has hours
+
         const hours = dayWithHour.split(' ')[1] || dayWithHour.split('T')[1]
         const day = dayWithHour.split(' ')[0] || dayWithHour.split('T')[0]
 
         date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
     }
 
-    // 18/03/2021 - 18/03/2021 00:00 - 18/03/2021 00:00:00 - 18/03/2021T00:00:00
     if (date.includes('/') && date.split('/')[2].length > 2) {
         const day = date.split('/')[0]
         const month = date.split('/')[1]
@@ -35,20 +32,18 @@ export function formatDate(
         // Verify if has hours
         const hours = yearWithHour.split(' ')[1] || yearWithHour.split('T')[1]
         const year = yearWithHour.split(' ')[0] || yearWithHour.split('T')[0]
-    
+
         date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
     }
 
-    // - 2021-03-18T00:00:00
     const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
     if (hourMinuteSecondsMatch) {
         return zonedTimeToUtc(date, timezone).toISOString()
     }
 
-    // - 2021-03-18T00:00:00.000Z
     const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
     if (isIsoFormat && ignoreTimezone) date = date.replace(/(.)\d{3}(Z)$/g, '')
-    
+
     return zonedTimeToUtc(date, timezone).toISOString()
 }
 
@@ -60,6 +55,15 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
     if (!date) return null
 
     return utcToZonedTime(date, timezone).toISOString()
+}
+
+/**
+ * @description Returns the actual date, can be parsed by timezone, parses AMERICA_SAO_PAULO by default
+ * @returns ISO format date
+ */
+export function getActualDate(timezone?: Timezone): (string | null) {
+    const date = new Date().toISOString()
+    return retrieveDate(date, timezone)
 }
 
 /**
