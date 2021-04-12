@@ -54,6 +54,14 @@ formatCompetence(date2); // 01/2021     -> Based on the timezone it will convert
 ```typescript
 import { getActualDate, Timezone } from '@roit/roit-date';
 
-getActualDate() // outputs 2021-02-12T03:00:00.000Z
-getActualDate(Timezone.AMERICA_SAO_PAULO) // outputs 2021-02-12T03:00:00.000Z
+getActualDate(); // outputs 2021-02-12T03:00:00.000Z
+getActualDate(Timezone.AMERICA_SAO_PAULO); // outputs 2021-02-12T03:00:00.000Z
+```
+
+### Diff of two dates
+
+```typescript
+import { diffDays } from '@roit/roit-date';
+
+diffDays('2021/01/12', '13/01/2021'); // outputs 1
 ```

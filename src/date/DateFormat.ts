@@ -1,6 +1,9 @@
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
+import { differenceInDays, parseISO } from 'date-fns'
+
 import { Timezone } from "../domain/enums/Timezone"
 import { Options } from "../domain/Options"
+import { Util } from "../utils/Util"
 
 /**
  * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
@@ -13,28 +16,7 @@ export function formatDate(
     const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
     const ignoreTimezone = options?.ignoreTimezone ?? false
 
-    if (date.includes('/') && date.split('/')[0].length > 2) {
-        const dayWithHour = date.split('/')[2]
-        const month = date.split('/')[1]
-        const year = date.split('/')[0]
-
-        const hours = dayWithHour.split(' ')[1] || dayWithHour.split('T')[1]
-        const day = dayWithHour.split(' ')[0] || dayWithHour.split('T')[0]
-
-        date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
-    }
-
-    if (date.includes('/') && date.split('/')[2].length > 2) {
-        const day = date.split('/')[0]
-        const month = date.split('/')[1]
-        const yearWithHour = date.split('/')[2]
-
-        // Verify if has hours
-        const hours = yearWithHour.split(' ')[1] || yearWithHour.split('T')[1]
-        const year = yearWithHour.split(' ')[0] || yearWithHour.split('T')[0]
-
-        date = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}${hours ? ' ' + hours : ''}`
-    }
+    date = Util.dateToISO(date)
 
     const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
     if (hourMinuteSecondsMatch) {
@@ -64,6 +46,20 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
 export function getActualDate(timezone?: Timezone): (string | null) {
     const date = new Date().toISOString()
     return retrieveDate(date, timezone)
+}
+
+/**
+ * @param before Accept ony ISO date format 
+ * @param after Accept ony ISO date format
+ * @description Compare two different iso date and return number of days that differs from one to another
+ */
+export function diffDays(before: string, after: string): number {
+    if (!before || !after) { return null }
+
+    const parsedBefore = parseISO(Util.dateToISO(before))
+    const parsedAfter = parseISO(Util.dateToISO(after))
+
+    return differenceInDays(parsedAfter, parsedBefore)
 }
 
 /**

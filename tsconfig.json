@@ -5,7 +5,7 @@
         "module": "commonjs",
         "outDir": "dist",
         "skipLibCheck": true,
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "noImplicitThis": true,
         "noImplicitReturns": true,
         "noImplicitAny": true,
