@@ -100,7 +100,7 @@ describe('DateFormat', () => {
 
    describe('diffDays()', () => {
       it('Should be able to return diff in days', () => {
-         const result = diffDays('2021/01/12', '13/01/2021')
+         const result = diffDays('2021/01/12', '13/01/2021','DAYS')
 
          expect(result).to.be.deep.equal(1)
       })

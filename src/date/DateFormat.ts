@@ -1,9 +1,10 @@
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
-import { differenceInDays, parseISO } from 'date-fns'
+import { differenceInDays, parseISO, differenceInHours} from 'date-fns'
 
 import { Timezone } from "../domain/enums/Timezone"
 import { Options } from "../domain/Options"
 import { Util } from "../utils/Util"
+import { ReturnType } from "../domain/enums/ReturnType"
 
 /**
  * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
@@ -53,13 +54,19 @@ export function getActualDate(timezone?: Timezone): (string | null) {
  * @param after Accept ony ISO date format
  * @description Compare two different iso date and return number of days that differs from one to another
  */
-export function diffDays(before: string, after: string): number {
+export function diffDays(before: string, after: string, returnType: ReturnType): number {
     if (!before || !after) { return null }
 
     const parsedBefore = parseISO(Util.dateToISO(before))
     const parsedAfter = parseISO(Util.dateToISO(after))
 
-    return differenceInDays(parsedAfter, parsedBefore)
+    switch (returnType) {
+        case 'HOURS':
+            return differenceInHours(parsedAfter, parsedBefore)
+            break;    
+        default:
+            return differenceInDays(parsedAfter, parsedBefore)
+    }    
 }
 
 /**
