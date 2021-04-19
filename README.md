@@ -65,3 +65,12 @@ import { diffDays } from '@roit/roit-date';
 
 diffDays('2021/01/12', '13/01/2021'); // outputs 1
 ```
+
+### ValidateDateFormat
+
+```typescript
+import { validateDateFormat } from '@roit/roit-date';
+
+validateDateFormat('invalid-date'); // false
+validateDateFormat('12/12/2021'); // true
+```
