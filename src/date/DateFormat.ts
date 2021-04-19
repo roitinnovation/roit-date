@@ -13,6 +13,8 @@ import { ReturnType } from "../domain/enums/ReturnType"
 export function formatDate(
     date: string, options?: Options): (string | null) {
     if (!date) { return null }
+    const validDate = validateDateFormat(date)
+    if (!validDate) { return null } 
 
     const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
     const ignoreTimezone = options?.ignoreTimezone ?? false
@@ -101,4 +103,38 @@ export function formatComponentDate(date: string, timezone = Timezone.AMERICA_SA
     const fullDate = `${year}-${month}-${day}`
 
     return formatDate(fullDate, { timezone })
+}
+
+/**
+ * @param date must be a string
+ * @returns boolean to check if the date is valid or not
+ */
+export function validateDateFormat(date: string): boolean {
+    // YYYY-MM-DDTHH:mm:ss.sssZ
+    const isoFormatMatchRegex = /^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g
+    // YYYY-MM-DDTHH:mm:ss or YYY-MM-DD HH:mm:ss
+    const hourMinuteMatchRegex = /^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g
+    // DD/MM/YYYY
+    const brFormatMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/g
+    // DD/MM/YYYY HH:mm:ss
+    const brFormatWithHourMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( )\d{2}(:)\d{2}(:)\d{2}$/g
+    // YYYY/MM/DD
+    const usaFormatMatchRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/g
+
+    const regexList = [
+        isoFormatMatchRegex,
+        hourMinuteMatchRegex,
+        brFormatMatchRegex,
+        brFormatWithHourMatchRegex,
+        usaFormatMatchRegex
+    ]
+
+    for (const regex of regexList) {
+        const match = date.match(regex)
+        if (match) {
+            return true
+        }
+    }
+
+    return false
 }
