@@ -12,7 +12,6 @@ import { ReturnType } from "../domain/enums/ReturnType"
  */
 export function formatDate(
     date: string, options?: Options): (string | null) {
-    if (!date) { return null }
     const validDate = validateDateFormat(date)
     if (!validDate) { return null } 
 
@@ -110,23 +109,43 @@ export function formatComponentDate(date: string, timezone = Timezone.AMERICA_SA
  * @returns boolean to check if the date is valid or not
  */
 export function validateDateFormat(date: string): boolean {
+    if (!date) return null
+
     // YYYY-MM-DDTHH:mm:ss.sssZ
     const isoFormatMatchRegex = /^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g
+    // YYYY-MM-DD
+    const dateWithHyphen = /^(\d{4}-\d{2}-\d{2})$/g
+    // YYYY-MM-DD HH:mm
+    const dateWithHyphenHour = /^(\d{4}-\d{2}-\d{2}( )\d{2}(:)\d{2})$/g
+    // YYYY-MM-DD HH:mm:ss
+    const dateWithHyphenHourAndSeconds = /^(\d{4}-\d{2}-\d{2}( )\d{2}(:)\d{2}(:)\d{2})$/g
     // YYYY-MM-DDTHH:mm:ss or YYY-MM-DD HH:mm:ss
-    const hourMinuteMatchRegex = /^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g
+    const isoFormatWithoutZone = /^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g
     // DD/MM/YYYY
     const brFormatMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/g
+    // DD/MM/YYYY HH:mm
+    const brFormatWithHourMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( )\d{2}(:)\d{2}$/g
     // DD/MM/YYYY HH:mm:ss
-    const brFormatWithHourMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( )\d{2}(:)\d{2}(:)\d{2}$/g
+    const brFormatWithHourAndSecondsMatchRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})( )\d{2}(:)\d{2}(:)\d{2}$/g
     // YYYY/MM/DD
     const usaFormatMatchRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/g
+    // YYYY/MM/DD HH:mm
+    const usaFormatWithHourMatchRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2})( )\d{2}(:)\d{2}$/g
+    // YYYY/MM/DD HH:mm:ss
+    const usaFormatWithHourAndSecondsMatchRegex = /^(\d{4})\/(\d{1,2})\/(\d{1,2})( )\d{2}(:)\d{2}(:)\d{2}$/g
 
     const regexList = [
         isoFormatMatchRegex,
-        hourMinuteMatchRegex,
+        dateWithHyphen,
+        dateWithHyphenHour,
+        dateWithHyphenHourAndSeconds,
+        isoFormatWithoutZone,
         brFormatMatchRegex,
         brFormatWithHourMatchRegex,
-        usaFormatMatchRegex
+        brFormatWithHourAndSecondsMatchRegex,
+        usaFormatMatchRegex,
+        usaFormatWithHourMatchRegex,
+        usaFormatWithHourAndSecondsMatchRegex
     ]
 
     for (const regex of regexList) {
