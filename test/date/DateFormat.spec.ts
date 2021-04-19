@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { formatDate, diffDays } from '../../src';
-import { formatComponentDate, retrieveDate } from '../../src/date/DateFormat';
+import { formatComponentDate, retrieveDate, validateDateFormat } from '../../src/date/DateFormat';
 
 describe('DateFormat', () => {
    it('Should be able to format dd/mm/yyyy to ISO format', () => {
@@ -103,6 +103,55 @@ describe('DateFormat', () => {
          const result = diffDays('2021/01/12', '13/01/2021','DAYS')
 
          expect(result).to.be.deep.equal(1)
+      })
+   })
+
+   describe('validateDateFormat()', () => {
+      it ('Should return true with YYYY-MM-DDTHH:mm:ss.sssZ', () => {
+         const date = '2020-06-01T03:00:00.000Z'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+
+      it ('Should return true with YYYY-MM-DDTHH:mm:ss', () => {
+         const date = '2020-06-01T03:00:00'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+
+      it ('Should return true with YYYY-MM-DD HH:mm:ss', () => {
+         const date = '2020-06-01 03:00:00'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+
+      it ('Should return true with DD/MM/YYYY', () => {
+         const date = '02/03/2020'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+
+      it ('Should return true with DD/MM/YYYY HH:mm:ss', () => {
+         const date = '02/03/2020 03:02:01'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+      it ('Should return true with YYYY/MM/DD', () => {
+         const date = '2020/04/02'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(true)
+      })
+
+      it ('Should return false with invalid date', () => {
+         const date = 'null'
+         const valid = validateDateFormat(date)
+         expect(valid).to.be.deep.equal(false)
+      })
+
+      it ('formatDate should return null because of validator', () => {
+         const date = 'null'
+         const result = formatDate(date)
+         expect(result).to.be.deep.equal(null)
       })
    })
 })
