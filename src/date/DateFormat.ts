@@ -45,9 +45,9 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
  * @description Returns the actual date, can be parsed by timezone, parses AMERICA_SAO_PAULO by default
  * @returns ISO format date
  */
-export function getActualDate(timezone?: Timezone): (string | null) {
-    const date = new Date().toISOString()
-    return retrieveDate(date, timezone)
+export function getActualDate(timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+    let date = new Date().toLocaleString("pt-BR", { timeZone: timezone })
+    return formatDate(date, { ignoreTimezone: true, timezone })
 }
 
 /**

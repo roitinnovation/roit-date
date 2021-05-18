@@ -1,7 +1,11 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { formatDate, diffDays } from '../../src';
-import { formatComponentDate, retrieveDate, validateDateFormat } from '../../src/date/DateFormat';
+import { formatComponentDate, retrieveDate, validateDateFormat, getActualDate } from '../../src/date/DateFormat';
+import MockDate from 'mockdate'
+
+const date = 1621356874897
+MockDate.set(date)
 
 describe('DateFormat', () => {
    it('Should be able to format dd/mm/yyyy to ISO format', () => {
@@ -153,5 +157,13 @@ describe('DateFormat', () => {
          const result = formatDate(date)
          expect(result).to.be.deep.equal(null)
       })
+   })
+})
+
+describe('getActualDate()', () => {
+   it('Should be able to retrieve an actual date', () => {
+      const response = getActualDate()
+
+      expect(response).to.be.deep.equal(new Date('2021-05-18T16:54:34.000Z').toISOString())
    })
 })
