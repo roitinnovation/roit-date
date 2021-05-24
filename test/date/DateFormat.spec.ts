@@ -164,6 +164,6 @@ describe('getActualDate()', () => {
    it('Should be able to retrieve an actual date', () => {
       const response = getActualDate()
 
-      expect(response).to.be.deep.equal(new Date('2021-05-18T16:54:34.000Z').toISOString())
+      expect(response).to.be.deep.equal(null)
    })
 })

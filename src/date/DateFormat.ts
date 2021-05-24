@@ -55,7 +55,7 @@ export function getActualDate(timezone = Timezone.AMERICA_SAO_PAULO): (string | 
  * @param after Accept ony ISO date format
  * @description Compare two different iso date and return number of days that differs from one to another
  */
-export function diffDays(before: string, after: string, returnType: ReturnType): number {
+export function diffDays(before: string, after: string, returnType: ReturnType): (number | null) {
     if (!before || !after) { return null }
 
     const parsedBefore = parseISO(Util.dateToISO(before))
@@ -109,7 +109,7 @@ export function formatComponentDate(date: string, timezone = Timezone.AMERICA_SA
  * @returns boolean to check if the date is valid or not
  */
 export function validateDateFormat(date: string): boolean {
-    if (!date) return null
+    if (!date) return false
 
     // YYYY-MM-DDTHH:mm:ss.sssZ
     const isoFormatMatchRegex = /^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g
