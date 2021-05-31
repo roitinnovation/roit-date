@@ -2,7 +2,7 @@ import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
 import { differenceInDays, parseISO, differenceInHours} from 'date-fns'
 
 import { Timezone } from "../domain/enums/Timezone"
-import { Options } from "../domain/Options"
+import { FormatOptions } from "../domain/Options"
 import { Util } from "../utils/Util"
 import { ReturnType } from "../domain/enums/ReturnType"
 
@@ -11,7 +11,7 @@ import { ReturnType } from "../domain/enums/ReturnType"
  * @description Should return a UTC date format
  */
 export function formatDate(
-    date: string, options?: Options): (string | null) {
+    date: string, options?: FormatOptions): (string | null) {
     const validDate = validateDateFormat(date)
     if (!validDate) { return null } 
 
@@ -39,15 +39,6 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
     if (!date) return null
 
     return utcToZonedTime(date, timezone).toISOString()
-}
-
-/**
- * @description Returns the actual date, can be parsed by timezone, parses AMERICA_SAO_PAULO by default
- * @returns ISO format date
- */
-export function getActualDate(timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
-    let date = new Date().toLocaleString("pt-BR", { timeZone: timezone })
-    return formatDate(date, { ignoreTimezone: true, timezone })
 }
 
 /**

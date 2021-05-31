@@ -22,5 +22,13 @@ describe('DateFormat', () => {
 
             expect(result).to.be.deep.equal(expected)
         })
+
+        it('Should be able to parse a ISO format to dd/MM/yyyy HH:mm', () => {
+            const result = showDateToUser('2021-01-12T01:00:00.000Z', { hours: true })
+
+            const expected = '11/01/2021 22:00'
+
+            expect(result).to.be.deep.equal(expected)
+        })
     })
 })
