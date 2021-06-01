@@ -31,6 +31,5 @@ export function showDateToUser(date: string, options?: RetrieveDateOptions): (st
         return format(parseISO(convertedDate), `dd/MM/yyyy HH:mm`)
     }
 
-    console.log('return', format(parseISO(convertedDate), `dd/MM/yyyy`))
     return format(parseISO(convertedDate), `dd/MM/yyyy`)
 }

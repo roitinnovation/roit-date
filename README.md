@@ -49,6 +49,14 @@ formatCompetence(date1) // 02/2021
 formatCompetence(date2) // 01/2021     -> Based on the timezone it will convert back to UTC -3 which is Sao Paulo
 ```
 
+### New Date
+
+```typescript
+import { newDate } from '@roit/roit-date'
+
+newDate() // if actual date in America/Sao_Paulo is 2021-05-31T22:06:00.786Z the output will be 2021-06-01T01:06:00.786Z
+```
+
 ### Diff of two dates
 
 ```typescript

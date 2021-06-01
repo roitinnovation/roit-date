@@ -42,6 +42,14 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
 }
 
 /**
+ * @param timezone Optional timezone
+ * @description Should return new Date() based on tz
+ */
+export function newDate(timezone = Timezone.AMERICA_SAO_PAULO): string {
+    return zonedTimeToUtc(new Date().toISOString(), timezone).toISOString()
+}
+
+/**
  * @param before Accept ony ISO date format 
  * @param after Accept ony ISO date format
  * @description Compare two different iso date and return number of days that differs from one to another
