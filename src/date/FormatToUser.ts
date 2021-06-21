@@ -9,10 +9,14 @@ import { RetrieveDateOptions } from "../domain/Options"
  * @description Should return a mm/yyyy date format
  */
 export function formatCompetence(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
-    if (!date) return null
-
-    const convertedDate = utcToZonedTime(date, timezone).toISOString()
-    return format(parseISO(convertedDate), 'MM/yyyy')
+    try {
+        if (!date) return null
+    
+        const convertedDate = utcToZonedTime(date, timezone).toISOString()
+        return format(parseISO(convertedDate), 'MM/yyyy')
+    } catch (error) {
+        return null
+    }
 }
 
 /**
