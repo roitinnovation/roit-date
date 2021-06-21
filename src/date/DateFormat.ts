@@ -10,25 +10,28 @@ import { ReturnType } from "../domain/enums/ReturnType"
  * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
  * @description Should return a UTC date format
  */
-export function formatDate(
-    date: string, options?: FormatOptions): (string | null) {
-    const validDate = validateDateFormat(date)
-    if (!validDate) { return null } 
-
-    const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
-    const ignoreTimezone = options?.ignoreTimezone ?? false
-
-    date = Util.dateToISO(date)
-
-    const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
-    if (hourMinuteSecondsMatch) {
+export function formatDate(date: string, options?: FormatOptions): (string | null) {
+    try {
+        const validDate = validateDateFormat(date)
+        if (!validDate) { return null } 
+    
+        const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
+        const ignoreTimezone = options?.ignoreTimezone ?? false
+    
+        date = Util.dateToISO(date)
+    
+        const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
+        if (hourMinuteSecondsMatch) {
+            return zonedTimeToUtc(date, timezone).toISOString()
+        }
+    
+        const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
+        if (isIsoFormat && ignoreTimezone) date = date.replace(/(.)\d{3}(Z)$/g, '')
+    
         return zonedTimeToUtc(date, timezone).toISOString()
+    } catch (error) {
+        return null
     }
-
-    const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
-    if (isIsoFormat && ignoreTimezone) date = date.replace(/(.)\d{3}(Z)$/g, '')
-
-    return zonedTimeToUtc(date, timezone).toISOString()
 }
 
 /**
