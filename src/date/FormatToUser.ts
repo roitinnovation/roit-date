@@ -3,6 +3,7 @@ import { utcToZonedTime } from "date-fns-tz"
 
 import { Timezone } from "../domain/enums/Timezone"
 import { RetrieveDateOptions } from "../domain/Options"
+import { Util } from "../utils/Util"
 
 /**
  * @param date Accept only ISO date
@@ -11,7 +12,7 @@ import { RetrieveDateOptions } from "../domain/Options"
 export function formatCompetence(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
     try {
         if (!date) return null
-    
+
         const convertedDate = utcToZonedTime(date, timezone).toISOString()
         return format(parseISO(convertedDate), 'MM/yyyy')
     } catch (error) {
@@ -28,6 +29,8 @@ export function showDateToUser(date: string, options?: RetrieveDateOptions): (st
 
     const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
     const hours = options?.hours ?? false
+
+    date = Util.dateToISO(date)
 
     const convertedDate = utcToZonedTime(date, timezone).toISOString()
 
