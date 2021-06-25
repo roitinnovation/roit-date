@@ -30,5 +30,13 @@ describe('DateFormat', () => {
 
             expect(result).to.be.deep.equal(expected)
         })
+
+        it('Should be able to parse a dd/MM/yyyy format to dd/MM/yyyy HH:mm', () => {
+            const result = showDateToUser('2021-01-12', { hours: true })
+
+            const expected = '11/01/2021 21:00'
+
+            expect(result).to.be.deep.equal(expected)
+        })
     })
 })
