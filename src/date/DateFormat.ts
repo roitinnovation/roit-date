@@ -5,6 +5,9 @@ import { Timezone } from "../domain/enums/Timezone"
 import { FormatOptions } from "../domain/Options"
 import { Util } from "../utils/Util"
 import { ReturnType } from "../domain/enums/ReturnType"
+import { formatToTimeZone } from "date-fns-timezone"
+
+const formatPattern = 'YYYY-M-DDTHH:mm:ss.SSS'
 
 /**
  * @param date Accept following date formats: yyyy/mm/dd, dd/mm/yyyy, dd/mm/yyyy hh:mm & ISO format
@@ -15,8 +18,8 @@ export function formatDate(date: string, options?: FormatOptions): (string | nul
         const validDate = validateDateFormat(date)
         if (!validDate) { return null } 
     
-        const timezone = options?.timezone ?? Timezone.AMERICA_SAO_PAULO
-        const ignoreTimezone = options?.ignoreTimezone ?? false
+        const timezone = options?.timezone || Timezone.ETC_UTC
+        const ignoreTimezone = options?.ignoreTimezone || false
     
         date = Util.dateToISO(date)
     
@@ -34,11 +37,22 @@ export function formatDate(date: string, options?: FormatOptions): (string | nul
     }
 }
 
+export function formatDateTimeZone(date: string, options?: FormatOptions): (string | null) {
+    return getDateTimezone(date, options.timezone)
+}
+
+function getDateTimezone(dateISO: string, timezone?: Timezone) {
+    if(timezone) {
+        return `${formatToTimeZone(dateISO, formatPattern, { timeZone: timezone })}Z`
+    }
+    return parseISO(dateISO).toISOString()
+}
+
 /**
  * @param date Accept only ISO date format
  * @description Should return a UTC date format based on timezone informed
  */
-export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+export function retrieveDate(date: string, timezone = Timezone.ETC_UTC): (string | null) {
     if (!date) return null
 
     return utcToZonedTime(date, timezone).toISOString()
@@ -48,7 +62,7 @@ export function retrieveDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO
  * @param timezone Optional timezone
  * @description Should return new Date() based on tz
  */
-export function newDate(timezone = Timezone.AMERICA_SAO_PAULO): string {
+export function newDate(timezone = Timezone.ETC_UTC): string {
     return zonedTimeToUtc(new Date().toISOString(), timezone).toISOString()
 }
 
@@ -77,7 +91,7 @@ export function diffDays(before: string, after: string, returnType: ReturnType):
  * @param date date must be in format Thu Mar 18 2021 21:27:53 GMT-0300 (Horário Padrão de Brasília)
  * @returns formatDate function call
  */
-export function formatComponentDate(date: string, timezone = Timezone.AMERICA_SAO_PAULO): (string | null) {
+export function formatComponentDate(date: string, timezone = Timezone.ETC_UTC): (string | null) {
     const monthsMap = new Map<string, number>()
     monthsMap.set("Jan", 1)
     monthsMap.set("Feb", 2)
