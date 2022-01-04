@@ -1,6 +1,6 @@
 {
   "name": "@roit/roit-date",
-  "version": "1.7.0",
+  "version": "1.9.0",
   "main": "dist/index.js",
   "types": "src/index.ts",
   "scripts": {

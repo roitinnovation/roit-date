@@ -1,5 +1,5 @@
 import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz"
-import { differenceInDays, parseISO, differenceInHours} from 'date-fns'
+import { differenceInDays, parseISO, differenceInHours } from 'date-fns'
 
 import { Timezone } from "../domain/enums/Timezone"
 import { FormatOptions } from "../domain/Options"
@@ -16,21 +16,21 @@ const formatPattern = 'YYYY-M-DDTHH:mm:ss.SSS'
 export function formatDate(date: string, options?: FormatOptions): (string | null) {
     try {
         const validDate = validateDateFormat(date)
-        if (!validDate) { return null } 
-    
+        if (!validDate) { return null }
+
         const timezone = options?.timezone || Timezone.ETC_UTC
         const ignoreTimezone = options?.ignoreTimezone || false
-    
+
         date = Util.dateToISO(date)
-    
+
         const hourMinuteSecondsMatch = date.match(/^(\d{4}-\d{2}-\d{2}(T| )\d{2}(:)\d{2}(:)\d{2})$/g)
         if (hourMinuteSecondsMatch) {
             return zonedTimeToUtc(date, timezone).toISOString()
         }
-    
+
         const isIsoFormat = date.match(/^(\d{4}-\d{2}-\d{2}(T)\d{2}(:)\d{2}(:)\d{2}(.)\d{3}(Z))$/g)
         if (isIsoFormat && ignoreTimezone) date = date.replace(/(.)\d{3}(Z)$/g, '')
-    
+
         return zonedTimeToUtc(date, timezone).toISOString()
     } catch (error) {
         return null
@@ -38,11 +38,11 @@ export function formatDate(date: string, options?: FormatOptions): (string | nul
 }
 
 export function formatDateTimeZone(date: string, options?: FormatOptions): (string | null) {
-    return getDateTimezone(date, options.timezone)
+    return getDateTimezone(date, options?.timezone)
 }
 
 function getDateTimezone(dateISO: string, timezone?: Timezone) {
-    if(timezone) {
+    if (timezone) {
         return `${formatToTimeZone(dateISO, formatPattern, { timeZone: timezone })}Z`
     }
     return parseISO(dateISO).toISOString()
@@ -80,10 +80,10 @@ export function diffDays(before: string, after: string, returnType: ReturnType):
     switch (returnType) {
         case 'HOURS':
             return differenceInHours(parsedAfter, parsedBefore)
-            break;    
+            break;
         default:
             return differenceInDays(parsedAfter, parsedBefore)
-    }    
+    }
 }
 
 /**
