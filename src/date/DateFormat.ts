@@ -6,6 +6,7 @@ import { FormatOptions } from "../domain/Options"
 import { Util } from "../utils/Util"
 import { ReturnType } from "../domain/enums/ReturnType"
 import { formatToTimeZone } from "date-fns-timezone"
+import { DateTime } from 'luxon'
 
 const formatPattern = 'YYYY-M-DDTHH:mm:ss.SSS'
 
@@ -63,7 +64,7 @@ export function retrieveDate(date: string, timezone = Timezone.ETC_UTC): (string
  * @description Should return new Date() based on tz
  */
 export function newDate(timezone = Timezone.ETC_UTC): string {
-    return zonedTimeToUtc(new Date().toISOString(), timezone).toISOString()
+    return DateTime.now().setZone(timezone).toISO() as string
 }
 
 /**

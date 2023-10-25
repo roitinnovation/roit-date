@@ -1,21 +1,29 @@
 {
     "compilerOptions": {
-        "target": "es2017",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "es6",
         "declaration": true,
         "module": "commonjs",
         "outDir": "dist",
         "skipLibCheck": true,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "noImplicitThis": true,
         "noImplicitReturns": true,
         "noImplicitAny": true,
+        "esModuleInterop": true,
         "incremental": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "strictPropertyInitialization": false
+        "strictPropertyInitialization": false,
+        "lib": ["dom", "es2018"],
     },
     "include": [
         "src/**/*.ts",
         "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
     ]
 }
