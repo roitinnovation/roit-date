@@ -64,7 +64,12 @@ export function retrieveDate(date: string, timezone = Timezone.ETC_UTC): (string
  * @description Should return new Date() based on tz
  */
 export function newDate(timezone = Timezone.ETC_UTC): string {
-    return DateTime.now().setZone(timezone).toISO() as string
+  if (timezone === Timezone.ETC_UTC) {
+    return DateTime.utc().toISO() as string
+  }
+  return DateTime.now().setZone(timezone).toISO({
+    includeOffset: false
+  }) as string
 }
 
 /**
